@@ -7,7 +7,7 @@ export default function FormLayout () {
     <nav className="bg-red-600 text-white px-15 py-2 shadow-md fixed w-full top-0 z-10">
       <div className="flex items-center justify-between  sm:justify-between sm:px-8 px-2">
         <img
-          src="/Logo.png"
+          src="/portalVisitas/Logo.png"
           alt="logo"
           className="w-20 h-5 rounded-sm sm:w-35 sm:h-15 sm:rounded-lg"
         />
@@ -18,7 +18,7 @@ export default function FormLayout () {
             rel="noopener noreferrer"
             className="hover:underline"
           >
-            <img src="/icons/facebook.png" alt="facebook" className="w-5 h-5" />
+            <img src="/portalVisitas/icons/facebook.png" alt="facebook" className="w-5 h-5" />
           </a>
           <a
             href="https://www.instagram.com/smartandfinalmx/"
@@ -26,7 +26,7 @@ export default function FormLayout () {
             rel="noopener noreferrer"
             className="hover:underline"
           >
-            <img src="/icons/instagram.png" alt="instagram" className="w-5 h-5" />
+            <img src="/portalVisitas/icons/instagram.png" alt="instagram" className="w-5 h-5" />
           </a>
           <a
             href="https://www.youtube.com/c/SmartnfinalMxOficial/videos"
@@ -34,7 +34,7 @@ export default function FormLayout () {
             rel="noopener noreferrer"
             className="hover:underline"
           >
-            <img src="/icons/youtube.png" alt="youtube" className="w-5 h-5" />
+            <img src="/portalVisitas/icons/youtube.png" alt="youtube" className="w-5 h-5" />
           </a>
         </div>
       </div>
