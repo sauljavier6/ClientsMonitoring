@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createUser, getUserByTelefono } from '../../api/formApi';
 import { toast } from 'react-toastify';
+import TicketScanner from '../scannticketcomponent/ScannTicketComponent';
 
 interface FormData {
   nombre: string;
@@ -17,7 +18,7 @@ export default function FormComponent() {
     lada: '+52',
     correo: '',
   });
-
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [isExistingUser, setIsExistingUser] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
   const [isTicket, setTicket] = useState('');
@@ -31,6 +32,11 @@ export default function FormComponent() {
       [name]: value,
     }));
   };
+
+  const handleScan = (decodedText: string) => {
+    const soloNumeros = decodedText.replace(/\D/g, '');
+    setTicket(soloNumeros);
+  }
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
@@ -117,6 +123,7 @@ export default function FormComponent() {
     isChecked;
 
   return (
+    <> 
     <form
       onSubmit={handleSubmit}
       className="max-w-md mx-auto p-6 bg-white rounded-xl shadow"
@@ -128,20 +135,29 @@ export default function FormComponent() {
       {/* Ticket */}
       <label className="block mb-4">
         <span className="block text-sm font-medium text-gray-500"># Ticket</span>
-        <input
-          type="text"
-          name="ticket"
-          placeholder="0000000000000000000000000"
-          minLength={25}
-          maxLength={25}
-          value={isTicket}
-          onChange={(e) => {
-            const soloNumeros = e.target.value.replace(/\D/g, ''); // Elimina todo lo que no sea número
-            setTicket(soloNumeros);
-          }}
-          required
-          className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-red-500 focus:border-red-500"
-        />
+        <div className="flex gap-2">
+          <input
+            type="text"
+            name="ticket"
+            placeholder="0000000000000000000000000"
+            minLength={25}
+            maxLength={25}
+            value={isTicket}
+            onChange={(e) => {
+              const soloNumeros = e.target.value.replace(/\D/g, '');
+              setTicket(soloNumeros);
+            }}
+            required
+            className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-red-500 focus:border-red-500"
+          />
+          <button
+            type="button"
+            onClick={() => setIsScannerOpen(true)}
+            className="bg-red-600 text-white px-4 rounded"
+          >
+            Escanear
+          </button>
+        </div>
       </label>
 
       {/* Teléfono */}
@@ -254,5 +270,20 @@ export default function FormComponent() {
         Registrar Visita
       </button>
     </form>
+      {/* Mostrar el escáner solo si está abierto */}
+      {isScannerOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-4 rounded-lg max-w-lg w-full">
+            <button
+              onClick={() => setIsScannerOpen(false)}
+              className="mb-2 text-red-600 font-bold"
+            >
+              Cerrar Escáner
+            </button>
+            <TicketScanner onDetected={setTicket} />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
