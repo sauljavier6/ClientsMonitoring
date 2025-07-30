@@ -255,11 +255,7 @@ export default function FormComponent() {
           onChange={handleChange}
           disabled={isExistingUser}
           required
-          className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm border 
-            focus:ring-red-500 focus:border-red-500 
-            ${isExistingUser
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-300'
-              : 'bg-white text-black border-gray-300'}`}
+          className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 text-gray-700"
         >
           <option value="" disabled selected hidden>Motivo de compra</option>
           <option value="hogar">Hogar</option>
