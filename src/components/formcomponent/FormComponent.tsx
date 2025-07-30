@@ -33,10 +33,10 @@ export default function FormComponent() {
     }));
   };
 
-  const handleScan = (decodedText: string) => {
+  /*const handleScan = (decodedText: string) => {
     const soloNumeros = decodedText.replace(/\D/g, '');
     setTicket(soloNumeros);
-  }
+  }*/
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
@@ -150,13 +150,6 @@ export default function FormComponent() {
             required
             className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-red-500 focus:border-red-500"
           />
-          <button
-            type="button"
-            onClick={() => setIsScannerOpen(true)}
-            className="bg-red-600 text-white px-4 rounded"
-          >
-            Escanear
-          </button>
         </div>
       </label>
 
