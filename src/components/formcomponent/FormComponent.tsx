@@ -249,7 +249,7 @@ export default function FormComponent() {
           disabled={isExistingUser}
           required
           className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm border 
-            focus:ring-red-500 focus:border-red-500 
+            focus:outline-none 
             ${isExistingUser
               ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-300'
               : 'bg-white text-black border-gray-300'}`}
@@ -260,6 +260,7 @@ export default function FormComponent() {
           <option value="ambos">Ambos</option>
         </select>
       </label>
+
 
       {/* Checkbox */}
       <div className="flex items-center space-x-2 mb-4">
