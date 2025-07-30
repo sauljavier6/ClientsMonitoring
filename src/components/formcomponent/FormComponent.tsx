@@ -18,7 +18,6 @@ export default function FormComponent() {
     lada: '+52',
     correo: '',
   });
-
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [isExistingUser, setIsExistingUser] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
@@ -124,6 +123,7 @@ export default function FormComponent() {
     isChecked;
 
   return (
+    <>
     <form
       onSubmit={handleSubmit}
       className="max-w-md mx-auto p-6 bg-white rounded-xl shadow"
