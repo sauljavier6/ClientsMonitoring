@@ -5,6 +5,7 @@ interface CreateUserData {
   Email: string;
   Termsandconditions: boolean;
   Ticket: string;
+  MotivoCompra: string;
 }
 
 export const createUser = async (data: CreateUserData) => {

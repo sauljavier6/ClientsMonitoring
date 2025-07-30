@@ -1,5 +1,4 @@
-// src/components/BarcodeScanner.tsx
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { BrowserMultiFormatReader, type IScannerControls } from '@zxing/browser';
 
 interface Props {
@@ -8,41 +7,56 @@ interface Props {
 
 export default function TicketScanner({ onDetected }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [controls, setControls] = useState<IScannerControls | null>(null);
-
-  navigator.mediaDevices.enumerateDevices()
-  .then(devices => {
-    const videoDevices = devices.filter(device => device.kind === 'videoinput');
-    console.log('Cámaras detectadas:', videoDevices);
-  })
-  .catch(error => {
-    console.error('Error al enumerar dispositivos:', error);
-  });
-
+  const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
+  const controlsRef = useRef<IScannerControls | null>(null);
 
   useEffect(() => {
-    const codeReader = new BrowserMultiFormatReader();
+    if (!videoRef.current) return;
 
-    codeReader
-      .decodeFromVideoDevice(undefined, videoRef.current!, (result, err, _controls) => {
-        if (err) {
-          console.warn("Error de escaneo:", err);
+    if (!codeReaderRef.current) {
+      codeReaderRef.current = new BrowserMultiFormatReader();
+    }
+    const codeReader = codeReaderRef.current;
+
+    let isActive = true;
+
+    navigator.mediaDevices.enumerateDevices()
+      .then(devices => {
+        if (!isActive) return;
+
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        console.log('Cámaras detectadas:', videoDevices);
+        if (videoDevices.length === 0) {
+          alert('No se detectaron cámaras');
+          return;
         }
-        if (result) {
-          onDetected(result.getText());
-          _controls?.stop();
-        }
-        if (_controls && !controls) {
-          setControls(_controls);
-        }
-      })
-      .catch((error) => {
-        console.error("Error al iniciar el lector:", error);
-        alert("No se pudo acceder a la cámara. Verifica permisos o conexión.");
+        const firstDeviceId = videoDevices[0].deviceId;
+
+        codeReader.decodeFromVideoDevice(firstDeviceId, videoRef.current!, (result, err, controls) => {
+          if (err) {
+            if (err.name !== 'NotFoundException') {
+              console.warn('Error de escaneo:', err);
+            }
+            return;
+          }
+          if (result) {
+            console.log('Código detectado:', result.getText());
+            onDetected(result.getText());
+            // No detengas el escaneo aquí para seguir detectando
+          }
+          if (controls && !controlsRef.current) {
+            controlsRef.current = controls;
+          }
+        }).catch(err => {
+          console.error('Error al iniciar la cámara:', err);
+          alert('No se pudo acceder a la cámara. Verifica permisos o conexión.');
+        });
       });
 
     return () => {
-      controls?.stop();
+      isActive = false;
+      controlsRef.current?.stop();
+      controlsRef.current = null;
     };
   }, [onDetected]);
 
@@ -51,4 +65,4 @@ export default function TicketScanner({ onDetected }: Props) {
       <video ref={videoRef} className="w-full max-h-64 border" />
     </div>
   );
-};
+}
