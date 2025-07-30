@@ -34,6 +34,11 @@ export default function FormComponent() {
     }));
   };
 
+  const handleScan = (decodedText: string) => {
+    const soloNumeros = decodedText.replace(/\D/g, '');
+    setTicket(soloNumeros);
+  }
+
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
   };
@@ -119,7 +124,6 @@ export default function FormComponent() {
     isChecked;
 
   return (
-    <>
     <form
       onSubmit={handleSubmit}
       className="max-w-md mx-auto p-6 bg-white rounded-xl shadow"
