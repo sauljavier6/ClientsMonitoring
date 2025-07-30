@@ -9,6 +9,7 @@ interface FormData {
   telefono: string;
   lada: string;
   correo: string;
+  motivoCompra: string;
 }
 
 export default function FormComponent() {
@@ -17,7 +18,9 @@ export default function FormComponent() {
     telefono: '',
     lada: '+52',
     correo: '',
+    motivoCompra: ''
   });
+  console.log(formData)
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [isExistingUser, setIsExistingUser] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
@@ -51,7 +54,8 @@ export default function FormComponent() {
             nombre: data.Name,
             telefono: data.Phone,
             lada: data.Pais,
-            correo: data.Email
+            correo: data.Email,
+            motivoCompra: data.MotivoCompra
           });
           setIsChecked(data.Termsandconditions);
           setIsExistingUser(true);
@@ -60,7 +64,8 @@ export default function FormComponent() {
             nombre: '',
             telefono: formData.telefono,
             lada: '+52',
-            correo: ''
+            correo: '',
+            motivoCompra: ''
           });
           setIsChecked(false);
           setIsExistingUser(false);
@@ -92,7 +97,7 @@ export default function FormComponent() {
          icon: false,
       });
 
-      setFormData({ nombre: '', telefono: '', lada: '+52', correo: '' });
+      setFormData({ nombre: '', telefono: '', lada: '+52', correo: '', motivoCompra: '' });
       setIsChecked(false);
       setTicket('');
 
@@ -108,7 +113,8 @@ export default function FormComponent() {
       Pais: formData.lada,
       Email: formData.correo,
       Termsandconditions: isChecked,
-      Ticket: isTicket
+      Ticket: isTicket,
+      MotivoCompra: formData.motivoCompra
     };
 
     mutate(newuser);
@@ -119,6 +125,7 @@ export default function FormComponent() {
     formData.correo.trim() !== '' &&
     formData.telefono.trim() !== '' &&
     formData.lada.trim() !== '' &&
+    formData.motivoCompra.trim() !== '' &&
     isTicket.trim() !== '' &&
     isChecked;
 
@@ -237,6 +244,28 @@ export default function FormComponent() {
             ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-300'
             : 'bg-white text-black border-gray-300'}`}
         />
+      </label>
+
+      {/* Motivo de compra */}
+      <label className="block mb-4">
+        <span className="block text-sm font-medium text-gray-500">Teléfono</span>
+        <select
+          name="motivoCompra"
+          value={formData.motivoCompra}
+          onChange={handleChange}
+          disabled={isExistingUser}
+          required
+          className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm border 
+            focus:ring-red-500 focus:border-red-500 
+            ${isExistingUser
+              ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-300'
+              : 'bg-white text-black border-gray-300'}`}
+        >
+          <option value="" disabled selected hidden>Motivo de compra</option>
+          <option value="hogar">Hogar</option>
+          <option value="negocio">Negocio</option>
+          <option value="ambos">Ambos</option>
+        </select>
       </label>
 
       {/* Checkbox */}
