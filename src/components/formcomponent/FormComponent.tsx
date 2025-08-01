@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createUser, getUserByTelefono } from '../../api/formApi';
 import { toast } from 'react-toastify';
-import TicketScanner from '../scannticketcomponent/ScannTicketComponent';
+import BarcodeScanner from '../BarcodeScanner/BarcodeScanner';
 
 interface FormData {
   nombre: string;
@@ -36,9 +36,9 @@ export default function FormComponent() {
     }));
   };
 
-  const handleScan = (decodedText: string) => {
-    const soloNumeros = decodedText.replace(/\D/g, '');
-    setTicket(soloNumeros);
+  function handleScan(codigo: string) {
+    setTicket(codigo);
+    setIsScannerOpen(false);
   }
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -310,7 +310,10 @@ export default function FormComponent() {
             >
               Cerrar Escáner
             </button>
-            <TicketScanner onDetected={setTicket} />
+            <div className="p-4">
+              <h1 className="text-xl font-bold mb-4">Escáner de código de barras</h1>
+              <BarcodeScanner onScan={handleScan} />
+            </div>
           </div>
         </div>
       )}
